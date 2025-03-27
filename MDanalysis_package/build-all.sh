@@ -86,6 +86,7 @@ mkdir -p scons-local
 pushd scons-local
 tar -xvf ../scons-local-2.3.0.tar.gz
 SCONSLOCAL="$python $PWD/scons.py"
+echo "scons extraced"
 popd
 
 # Build frameset (a molfile prereq)
@@ -94,9 +95,12 @@ OBJDIR=$OBJDIR PREFIX=$PREFIX opt_j=$opt_j ./build-frameset.sh
 # Build fastjson (an msys prereq)
 tar -xf fastjson-1.5.1-src.tar.gz
 pushd fastjson-1.5.1
-CCFLAGS="-O3 -g -Wall -fPIC"
+CCFLAGS="-O3 -g -Wall -fPIC -std=c++98"
 LINKFLAGS="-O3 -fPIC"
+sed -i "s/\$CCFLAGS/\$CCFLAGS -std=c++98/g" SConstruct 
+echo "scons startint fastjson"
 CCFLAGS=$CCFLAGS LINKFLAGS=$LINKFLAGS $SCONSLOCAL -j$opt_j install OBJDIR=objs  PREFIX=$PREFIX 
+echo "scons complete"
 popd
 
 # g++ flags
@@ -122,7 +126,13 @@ tar -xf molfile-1.10.15-src.tar.gz
 pushd molfile-1.10.15
 DESRES_MODULE_CPPFLAGS="$IBOOST:$IPYTHON:$INUMPY:$ISQLITE"
 DESRES_MODULE_LDFLAGS="$LBOOST:$LPYTHON:$LNUMPY:$LSQLITE"
+pwd
+sed  -i "s/molfileenv.Append(/molfileenv.Append(CXXFLAGS='-std=c++98',CFLAGS='-std=c90',/g" src/SConscript
+sed -i "s/bool init_common(/void init_common(/g" plugins/dtrplugin.hxx 
+sed -i "s/bool DtrReader::init_common(/void  DtrReader::init_common(/g" plugins/dtrplugin.cxx 
+echo "scons startint molfile"
 DESRES_MODULE_CPPFLAGS=$DESRES_MODULE_CPPFLAGS DESRES_MODULE_LDFLAGS=$DESRES_MODULE_LDFLAGS $SCONSLOCAL -j$opt_j install  PREFIX=$PREFIX 
+echo "scons complete"
 echo; echo 'Testing molfile'
 $python tests/ut.py
 popd
@@ -132,6 +142,8 @@ tar -xf periodicfix-2.4.7-src.tar.gz
 pushd periodicfix-2.4.7
 DESRES_MODULE_CPPFLAGS="$IBOOST:$IPYTHON:$INUMPY"
 DESRES_MODULE_LDFLAGS="$LBOOST:$LPYTHON:$LNUMPY"
+sed -i "s/\$CCFLAGS/\$CCFLAGS -std=c++98/g" SConstruct 
+echo "Starting scons periodicfix"
 DESRES_MODULE_CPPFLAGS=$DESRES_MODULE_CPPFLAGS DESRES_MODULE_LDFLAGS=$DESRES_MODULE_LDFLAGS $SCONSLOCAL -j$opt_j install  PREFIX=$PREFIX 
 echo; echo 'Testing periodicfix'
 $python test/test_pf.py
@@ -149,6 +161,8 @@ pushd msys-1.7.52
 DESRES_MODULE_CPPFLAGS="$IBOOST:$IPYTHON:$INUMPY:$ISQLITE:$ILPSOLVE:-I${PREFIX}/include"
 DESRES_MODULE_LDFLAGS="$LBOOST:$LPYTHON:$LNUMPY:$LSQLITE:$LLPSOLVE:-L${PREFIX}/lib:-Wl,-rpath,${PREFIX}/lib"
 DESRES_MODULE_LDLIBS="-l$lPYTHON:-l$lSQLITE:-lfastjson:-lprimegen:-l$lLPSOLVE"
+sed -i "s/\$CCFLAGS/\$CCFLAGS -std=c++98/g" SConstruct 
+echo "scons startint molfile"
 MSYS_VERSION=1.7.52 DESRES_MODULE_CPPFLAGS=$DESRES_MODULE_CPPFLAGS DESRES_MODULE_LDFLAGS=$DESRES_MODULE_LDFLAGS DESRES_MODULE_LDLIBS=$DESRES_MODULE_LDLIBS $SCONSLOCAL -j$opt_j install  PREFIX=$PREFIX MSYS_WITHOUT_INCHI=1
 echo; echo 'Testing msys'
 $python tests/ut.py

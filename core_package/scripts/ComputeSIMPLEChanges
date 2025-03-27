@@ -79,7 +79,7 @@ args = vars(parser.parse_args())
 
 if args['data-file'][-3:] == '.h5':
     import tables
-    h5 = tables.openFile(args['data-file'])
+    h5 = tables.open_file(args['data-file'])
     data = h5.root.data
 else:
     data = cPickle.load(open(args['data-file']))

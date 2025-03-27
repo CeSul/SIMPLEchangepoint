@@ -82,7 +82,7 @@ class TrajectoryChanges(object):
         file = open(os.path.join(path, 'data_info.pkl'), 'r')
         self._info = cPickle.load(file)
         file.close()
-        self._h5 = tables.openFile(os.path.join(path, 'data.h5'), 'r')
+        self._h5 = tables.open_file(os.path.join(path, 'data.h5'), 'r')
         self._system = msys.Load(self._info['structure_file'])
         self._changes = {}
         for f in os.listdir(path):

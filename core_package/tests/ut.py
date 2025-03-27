@@ -243,8 +243,8 @@ print '  %s' % os.path.realpath('tests/data.pkl')
 
 try:
     import tables
-    h5 = tables.openFile('tests/data.h5', 'w')
-    ca = h5.createCArray(h5.root, 'data', tables.Float64Atom(), data.shape)
+    h5 = tables.open_file('tests/data.h5', 'w')
+    ca = h5.create_carray(h5.root, 'data', tables.Float64Atom(), data.shape)
     ca[:] = data
     h5.close()
     print '  %s' % os.path.realpath('tests/data.h5')

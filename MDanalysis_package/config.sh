@@ -11,23 +11,23 @@
 
 # C/C++ header files - <sqlite3.h>, <Python.h>, <boost/*>,
 #                      <numpy/ndarrayobject.h>, "lp_solve/lp_lib.h"
-SQLITE_INCLUDE=/directory/that/contains/sqlite3.h
-PYTHON_INCLUDE=/directory/that/contains/Python.h
-BOOST_INCLUDE=/directory/that/contains/boost
-NUMPY_INCLUDE=/directory/that/contains/numpy
-LPSOLVE_INCLUDE=/directory/that/contains/lp_solve
+SQLITE_INCLUDE=${CONDA_PREFIX}/include
+PYTHON_INCLUDE=${CONDA_PREFIX}/include/python2.7
+BOOST_INCLUDE=${CONDA_PREFIX}/include/
+NUMPY_INCLUDE=$CONDA_PREFIX/lib/python2.7/site-packages/numpy/core/include
+LPSOLVE_INCLUDE=${CONDA_PREFIX}/include/
 
 # Shared object names
-lSQLITE=sqlite3
+lSQLITE=sqlite3.40.0
 lPYTHON=python2.7
 lLPSOLVE=lpsolve55
 
 # Shared object paths
-SQLITE_LIB=/directory/that/contains/lib${lSQLITE}.so
-PYTHON_LIB=/directory/that/contains/lib${lPYTHON}.so
-BOOST_LIB=/directory/that/contains/libboost_python.so
-NUMPY_LIB=/directory/that/contains/multiarray.so
-LPSOLVE_LIB=/directory/that/contains/lib${lLPSOLVE}.so
+SQLITE_LIB=${CONDA_PREFIX}/lib/${lSQLITE}/
+PYTHON_LIB=${CONDA_PREFIX}/lib
+BOOST_LIB=${CONDA_PREFIX}/lib
+NUMPY_LIB=${CONDA_PREFIX}/lib/python2.7/site-packages/numpy/core/
+LPSOLVE_LIB=${CONDA_PREFIX}/lib
 
 # Name of the python executable
 python=$lPYTHON

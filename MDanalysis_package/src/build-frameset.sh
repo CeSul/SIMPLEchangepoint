@@ -44,6 +44,8 @@ export CPPFLAGS="" #"-I$PREFIX/include"
 
 tar -xf frameset-from-Desmond-3.4.0.2-benchmark.tar.gz
 pushd frameset
+sed -i "s/\$CCFLAGS/\$CCFLAGS -std=c++98/g" SConstruct
+
 
 cat <<EOF > conf.py
 if EXTRA_C_FLAGS == None: EXTRA_C_FLAGS = ''

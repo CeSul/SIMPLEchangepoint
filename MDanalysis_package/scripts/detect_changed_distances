@@ -270,8 +270,8 @@ def compute_distances(workdir, identifier, structure_file, trajectory_file,
         filename = os.path.join(workdir, identifier, 'data.h5')
         if os.path.exists(filename):
             os.remove(filename)
-        h5out = tables.openFile(filename, 'w')
-        data_array = h5out.createCArray(h5out.root, 'data',
+        h5out = tables.open_file(filename, 'w')
+        data_array = h5out.create_carray(h5out.root, 'data',
                 tables.Float32Atom(), (dists.shape[0], len(trj)),
                 chunkshape=(1, len(trj)))
     # Split gather and write into separate chunks of rows
@@ -434,7 +434,7 @@ def detect_changed_distances(workdir, identifier, lambda_start, max_change_times
         world.allgather(None)
     while not os.access(h5_path, os.R_OK) or not os.access(info_path, os.R_OK):
         time.sleep(5)
-    h5 = tables.openFile(os.path.join(workdir, identifier, 'data.h5'), 'r')
+    h5 = tables.open_file(os.path.join(workdir, identifier, 'data.h5'), 'r')
     file = open(os.path.join(workdir, identifier, 'data_info.pkl'), 'r')
     info = cPickle.load(file)
     file.close()
